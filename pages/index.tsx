@@ -1,17 +1,12 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import { Inter } from '@next/font/google'
-import styles from '@/styles/Home.module.css'
-import { Web3Button } from '@web3modal/react'
-import { useAccount, useConnect, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi'
+import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import { useEffect, useState } from 'react'
-
-const inter = Inter({ subsets: ['latin'] })
+import { goerli } from '@wagmi/core/chains'
+import Balance from '@/components/balance'
 
 export default function Home() {
   const { address, connector } = useAccount()
-  const { data: ensAvatar } = useEnsAvatar({ address })
-  const { data: ensName } = useEnsName({ address })
   const { connect, connectors, error, isLoading, pendingConnector } =
     useConnect()
   const { disconnect } = useDisconnect()
@@ -22,6 +17,8 @@ export default function Home() {
     else if (isConnected) setIsConnected(false);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
+
+  console.log("connector", connector)
 
   return (
     <>
@@ -34,8 +31,16 @@ export default function Home() {
       <div>
         {isConnected ? (
            <div>
-            Connected to {address}
-            <button onClick={() => disconnect()}>Disconnect</button>
+            <div>Connected to {address}</div>
+            <button
+              onClick={() => disconnect()}
+              style={{
+                marginTop: "8px",
+                marginBottom: "8px",
+              }}
+            >
+              Disconnect</button>
+            <Balance />
           </div>
         ) : (
           <>
@@ -43,7 +48,10 @@ export default function Home() {
               <button
                 disabled={!connector.ready}
                 key={connector.id}
-                onClick={() => connect({ connector })}
+                onClick={() => connect({ connector, chainId: goerli.id })}
+                style={{
+                  margin: "8px"
+              }}
               >
                 {connector.name}
                 {!connector.ready && ' (unsupported)'}
