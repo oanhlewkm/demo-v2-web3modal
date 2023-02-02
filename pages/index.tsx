@@ -4,6 +4,8 @@ import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import { useEffect, useState } from 'react'
 import { goerli } from '@wagmi/core/chains'
 import Balance from '@/components/balance'
+import Transaction from '@/components/transactions'
+import SwitchNetwork from '@/components/switch-network'
 
 export default function Home() {
   const { address, connector } = useAccount()
@@ -41,6 +43,8 @@ export default function Home() {
             >
               Disconnect</button>
             <Balance />
+            <Transaction />
+            <SwitchNetwork />
           </div>
         ) : (
           <>

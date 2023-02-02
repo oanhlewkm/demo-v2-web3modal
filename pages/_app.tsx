@@ -11,7 +11,7 @@ import { Web3Modal } from "@web3modal/react";
 import { useEffect, useState } from 'react';
 
 import { WagmiConfig, createClient, configureChains,  } from 'wagmi'
-import { goerli, polygonMumbai } from 'wagmi/chains'
+import { bscTestnet, goerli, polygonMumbai } from 'wagmi/chains'
  
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { publicProvider } from 'wagmi/providers/public'
@@ -29,7 +29,7 @@ if (!process.env.NEXT_PUBLIC_PROJECT_ID) {
 export const projectId = process.env.NEXT_PUBLIC_PROJECT_ID
 
 // 2. Configure wagmi client
-const chains = [goerli]
+const chains = [goerli, polygonMumbai, bscTestnet];
 const { provider, webSocketProvider } = configureChains(chains, [walletConnectProvider({ projectId })])
 export const wagmiClient = createClient({
   autoConnect: true,
